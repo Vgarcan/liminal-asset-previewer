@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#111111" />
+  <title>Liminal Asset Previewer</title>
+  <link rel="stylesheet" href="styles.css" />
+
+  <!--
+    Babylon.js is pinned so the previewer does not silently change when a new
+    engine release is published. In the main game we can later move to the ES
+    module/npm build; this static viewer deliberately stays dependency-light.
+  -->
+  <script defer src="https://cdn.jsdelivr.net/npm/babylonjs@9.25.0/babylon.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/babylonjs-loaders@9.25.0/babylonjs.loaders.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="toolbar" aria-label="Controles del visor">
+      <div class="toolbar__primary">
+        <label class="button button--primary" for="assetFile">Cargar GLB</label>
+        <input id="assetFile" class="sr-only" type="file" accept=".glb,model/gltf-binary" />
+
+        <button id="frameButton" class="button" type="button" disabled>Centrar</button>
+        <button id="wireframeButton" class="button" type="button" aria-pressed="false" disabled>Wireframe</button>
+        <button id="gridButton" class="button" type="button" aria-pressed="true">Grid</button>
+        <button id="rotateButton" class="button" type="button" aria-pressed="false" disabled>Auto-rotar</button>
+      </div>
+
+      <div class="toolbar__status" aria-live="polite">
+        <strong id="statusTitle">Preparando visor…</strong>
+        <span id="statusDetail">Babylon.js todavía no se ha inicializado.</span>
+      </div>
+    </header>
+
+    <section class="viewer" id="dropZone" aria-label="Visor 3D">
+      <canvas id="renderCanvas" tabindex="0" aria-label="Vista 3D del asset"></canvas>
+
+      <div id="emptyState" class="empty-state">
+        <div class="empty-state__icon" aria-hidden="true">3D</div>
+        <h1>Liminal Asset Previewer</h1>
+        <p>Carga un archivo <code>.glb</code> para revisarlo con Babylon.js.</p>
+        <p class="muted">Móvil: arrastra con un dedo y pellizca para zoom. PC: arrastra y usa la rueda.</p>
+      </div>
+
+      <div id="loadingOverlay" class="loading-overlay" hidden>
+        <div class="spinner" aria-hidden="true"></div>
+        <span id="loadingText">Cargando asset…</span>
+      </div>
+
+      <div id="errorPanel" class="error-panel" role="alert" hidden>
+        <strong>No se pudo cargar el asset</strong>
+        <span id="errorMessage"></span>
+      </div>
+
+      <aside id="assetInfo" class="asset-info" hidden aria-label="Información del asset">
+        <div><span>Archivo</span><strong id="infoFile">—</strong></div>
+        <div><span>Tamaño</span><strong id="infoFileSize">—</strong></div>
+        <div><span>Dimensiones</span><strong id="infoDimensions">—</strong></div>
+        <div><span>Meshes</span><strong id="infoMeshes">—</strong></div>
+        <div><span>Materiales</span><strong id="infoMaterials">—</strong></div>
+        <div><span>Triángulos</span><strong id="infoTriangles">—</strong></div>
+      </aside>
+    </section>
+
+    <footer class="footer-note">
+      <span>Convención de proyecto: 1 unidad = 1 metro.</span>
+      <span>El archivo se procesa localmente en tu navegador; no se sube a un servidor.</span>
+    </footer>
+  </main>
+</body>
+</html>
